@@ -3,7 +3,7 @@
   <name>simple_uart_reader </name>
   <version>0.0.0</version>
   <description>The simple_uart_reader  package</description>
-  <maintainer email="khoa">khoa</maintainer>
+  <maintainer email="khoa@hello.com">khoa</maintainer>
   <license>MIT</license>
 
   <buildtool_depend>catkin</buildtool_depend>

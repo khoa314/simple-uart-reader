@@ -45,11 +45,11 @@ int main(int argc, char **argv)
     ros::init(argc, argv, "serial_listener");
     ros::NodeHandle nh;
     ros::Publisher vector3_pub = nh.advertise<geometry_msgs::Vector3Stamped>("serial_vec3", 1000);
-    ros::Rate loop_rate(10);
+    ros::Rate loop_rate(100); // 50 Hz
 
     int last_index = 0;
 
-    serial::Serial my_serial("/dev/ttyUSB0", 115200, serial::Timeout::simpleTimeout(10)); // 10ms timeout
+    serial::Serial my_serial("/dev/ttyUSB0", 115200, serial::Timeout::simpleTimeout(25)); // 10ms timeout
     cout << "Is the serial port open?";
     if (my_serial.isOpen())
         cout << " Yes." << endl;
@@ -68,12 +68,12 @@ int main(int argc, char **argv)
 
     while (ros::ok())
     {
-        string result = my_serial.read(100);
+        string result = my_serial.read(29);
         if (result.length() == 0)
         {
             ROS_WARN_THROTTLE(1, "No data available");
         }
-        else if (auto parse_result = scn::scan<int, double, double, double>(result, "{}_{}_{}_{}\r\n"))
+        else if (auto parse_result = scn::scan<int, double, double, double>(result, "{}, {}, {}, {}\r\n"))
         {
             auto [a, b, c, d] = parse_result->values();
             if (a == last_index)
